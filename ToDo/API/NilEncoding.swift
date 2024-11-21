@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import Foundation
 
 struct NilEncoding: ParameterEncoding {
     static let `default` = NilEncoding()

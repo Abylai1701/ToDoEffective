@@ -1,5 +1,6 @@
 
 import Alamofire
+import Foundation
 
 class NetworkManager {
     
