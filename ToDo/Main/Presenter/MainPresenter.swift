@@ -13,6 +13,8 @@ protocol MainPresenterProtocol: AnyObject {
     func presentError()
     func createTask()
     func showTaskDetail(id: Int64)
+    func taskWillDone(task: CoreDataToDoTask)
+    func taskWillDelete(task: CoreDataToDoTask)
 }
 
 protocol CreateTaskDelegate: AnyObject {
@@ -32,6 +34,15 @@ class MainPresenter {
 }
 
 extension MainPresenter: MainPresenterProtocol {
+    func taskWillDelete(task: CoreDataToDoTask) {
+        interactor.taskDelete(task: task)
+    }
+    
+    func taskWillDone(task: CoreDataToDoTask) {
+        interactor.taskDone(task: task)
+    }
+
+    
     func createTask() {
         router.createTask()
     }

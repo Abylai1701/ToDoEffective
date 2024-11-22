@@ -4,6 +4,8 @@ import CoreData
 protocol MainInteractorProtocol: AnyObject {
     func saveTasksFromAPI()
     func loadTasksFromCoreData()
+    func taskDone(task: CoreDataToDoTask)
+    func taskDelete(task: CoreDataToDoTask)
 }
 
 class MainInteractor {
@@ -23,6 +25,20 @@ class MainInteractor {
 }
 
 extension MainInteractor: MainInteractorProtocol {
+    func taskDelete(task: CoreDataToDoTask) {
+        coreStore.deleteTask(by: task.id) {
+            self.presenter?.viewDidLoaded()
+        }
+    }
+    
+    func taskDone(task: CoreDataToDoTask) {
+        task.completed = true
+        
+        coreStore.saveContext {
+            self.presenter?.viewDidLoaded()
+        }
+    }
+    
     func saveTasksFromAPI() {
         LoaderView.show()
         

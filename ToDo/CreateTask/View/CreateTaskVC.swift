@@ -43,7 +43,7 @@ final class CreateTaskVC: UIViewController {
         let label = UILabel()
         label.textColor = .black
         label.text = "Новая задача"
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 1
         return label
     }()
@@ -61,11 +61,11 @@ final class CreateTaskVC: UIViewController {
     
     private lazy var sendButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .blue
+        button.backgroundColor = .update
         button.layer.cornerRadius = 16
         button.setTitle("Создать", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
-        button.titleLabel?.textColor = .white
+        button.titleLabel?.textColor = .black
         button.addTarget(self,
                          action: #selector(createTask),
                          for: .touchUpInside)
@@ -77,6 +77,7 @@ final class CreateTaskVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        hideKeyboardWhenTappedAround()
     }
     
     //MARK: - Setup Views
@@ -153,19 +154,25 @@ final class CreateTaskVC: UIViewController {
         let today = calendar.startOfDay(for: Date())
 
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ru_RU")
-        dateFormatter.dateStyle = .medium
-        dateFormatter.timeStyle = .none
-
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter.dateFormat = "MM/dd/yy"
+        
         let dateString = dateFormatter.string(from: today)
 
         guard !aboutTextView2.text.isEmpty else { return }
         
-        let task = NewTodo(title: aboutTextView2.text ?? "", description: aboutTextView.text ?? "", completed: false, date: dateString)
+        let task = NewTodo(
+            title: aboutTextView2.text ?? "",
+            description: aboutTextView.text ?? "",
+            completed: false,
+            date: dateString
+        )
+        
         presenter?.createTask(task: task) { [weak self] in
             self?.presenter?.dismissCreateTask()
         }
     }
+
     
     private func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
         let size = image.size

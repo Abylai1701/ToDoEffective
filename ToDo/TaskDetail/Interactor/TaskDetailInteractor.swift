@@ -3,8 +3,6 @@ import CoreData
 
 protocol TaskDetailInteractorProtocol: AnyObject {
     func takeTask()
-    func taskDone()
-    func taskDelete()
     func updateTask(title: String, description: String)
 }
 
@@ -41,30 +39,13 @@ class TaskDetailInteractor: TaskDetailInteractorProtocol {
             print("Task not found.")
         }
     }
-    
-    func taskDone() {
-        guard let task = task else {
-            print("Task not found.")
-            return
-        }
-        
-        task.completed = true
-        
-        coreStore.saveContext {
-            self.presenter?.taskDidDone()
-        }
-    }
-    func taskDelete() {
-        coreStore.deleteTask(by: id) {
-            self.presenter?.taskDidDone()
-        }
-    }
+
     func updateTask(title: String, description: String) {
         task?.todo = title
         task?.descrip = description
         coreStore.saveContext {
             print("Task updated successfully.")
-            self.presenter?.taskDidDone()
+            self.presenter?.taskDidUpdate()
         }
     }
 }

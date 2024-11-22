@@ -23,6 +23,6 @@ class MainRouter: MainRouterProtocol {
     }
     func pushToDetail(id: Int64) {
         let taskDetailVC = TaskDetailBuilder.build(id: id, delegate: viewController?.presenter as? CreateTaskDelegate)
-        viewController?.present(taskDetailVC, animated: true)
+        viewController?.navigationController?.pushViewController(taskDetailVC, animated: true)
     }
 }

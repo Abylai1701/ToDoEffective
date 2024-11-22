@@ -11,10 +11,8 @@ import Foundation
 protocol TaskDetailPresenterProtocol: AnyObject {
     func viewDidLoaded()
     func taskDidLoad(task: CoreDataToDoTask)
-    func taskWillDone()
-    func taskDidDone()
-    func taskWillDelete()
     func saveTaskChanges(title: String, description: String)
+    func taskDidUpdate()
 }
 
 class TaskDetailPresenter {
@@ -31,15 +29,7 @@ class TaskDetailPresenter {
 }
 
 extension TaskDetailPresenter: TaskDetailPresenterProtocol {
-    func taskDidDone() {
-        view?.updateDoneButton()
-        self.delegate?.didFinishTaskCreation()
-    }
-    
-    func taskWillDone() {
-        interactor.taskDone()
-    }
-    
+ 
     func taskDidLoad(task: CoreDataToDoTask) {
         view?.loadTaskInfo(task: task)
     }
@@ -49,9 +39,10 @@ extension TaskDetailPresenter: TaskDetailPresenterProtocol {
         interactor.takeTask()
     }
     
-    func taskWillDelete() {
-        interactor.taskDelete()
+    func taskDidUpdate() {
+        view?.taskDidUpdate()
     }
+
     func saveTaskChanges(title: String, description: String) {
         interactor.updateTask(title: title, description: description)
     }
